@@ -1,0 +1,20 @@
+﻿<!-- Back End Model : List<Employee>-->
+<!-- Front end Model Display On Table Fromat-->
+
+    <table class="table table-bordered table-hover">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Image</th>
+        </tr>
+        @foreach (Employee item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.ImageURl</td>
+            <td><img src="/Images/@item.ImageURl" style="width:100px" /></td>
+            </tr>
+        }
+    </table>
+    

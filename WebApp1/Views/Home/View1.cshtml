@@ -1,0 +1,45 @@
+﻿<h1>Hello From First View</h1>
+<!--CSS + HTML + JS + C#-->
+
+<style>
+    h1{
+        color:red;
+        background-color:yellow;
+    }
+</style>
+
+<!--Razor Sytanx-->
+<!-- Blocking Code -->
+@{
+    //Comment Render To HTML
+    int x = 10;
+    int y = x + 10;
+}
+<!--Condition Statment (if switch ) Server Side -->
+@if (x > y){
+    <h2>X Greater Than Y</h2>
+}else{
+    <h2>X =@x Less Than Y=@y</h2>
+}
+<hr/>
+<!--Lopping Statment  (for - while -do while - foreach)->
+    <ul><!--unorderList-->
+        <li>List</li><!--List Item-->
+        @for (int i = 0; i < 10; i++)
+        {
+            <li>@i</li>
+        }
+    </ul>
+
+
+
+
+
+
+
+<!--Inline Code print on page-->
+<h2>X= @x</h2>
+<h2>Y= @y</h2>
+<h2>X+Y=@(x+y)</h2>
+
+
