@@ -1,0 +1,19 @@
+﻿@* @model WebApp1.ViewModels.DeptDetailsWithMsgTempBranchesandColorViewModel *@
+@* @using WebApp1.ViewModels
+@model DeptDetailsWithMsgTempBranchesandColorViewModel *@
+
+@model DeptDetailsWithMsgTempBranchesandColorViewModel
+@{
+    ViewData["Title"] = "DetailsVM";
+}
+
+<h1>DetailsVM</h1>
+@Model.DeptID
+@Model.DeptName
+<select class="form form-control">
+    @foreach (var item in Model.Branches)
+    {
+        <option>@item</option>
+    }
+</select>
+

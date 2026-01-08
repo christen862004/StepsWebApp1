@@ -1,0 +1,38 @@
+﻿@model Department
+@{
+    ViewData["Title"] = "Details";//View  Set on ViewData ????
+}
+
+<h1>Details</h1>
+
+<h2 style="background-color:@ViewData["Color"]">@Model.Name</h2>
+<h2 style="background-color:@ViewBag.Color">@Model.Name</h2>
+<hr />
+<h3>@ViewData["Msg"]</h3>
+<h3>@ViewBag.Msg</h3>
+<hr />
+
+<h4>@(int.Parse(ViewData["Temp"].ToString())-5)</h4>
+<h4>@(ViewBag.Temp-5)</h4>
+<hr />
+<select class="form form-control">
+    @foreach (var item in (List<string>)ViewData["Branches"])
+    {
+        <option>@item</option>
+    }
+
+</select>
+<select class="form form-control">
+    <!--Dynaimc unboxing runtime -->
+    @foreach (var item in ViewBag.Branches)
+    {
+        <option>@item</option>
+    }
+
+</select>
+
+<!--
+1) MAgic string "Dictionary Key"
+2) Type Casting "Unbox"
+
+-->
