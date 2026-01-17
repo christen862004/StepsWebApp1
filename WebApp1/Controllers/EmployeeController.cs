@@ -17,6 +17,51 @@ namespace WebApp1.Controllers
             //Load View with name AllEmp  ==> Employee Folder
             //Model with Typle List<Employee>
         }
+
+        #region Edit
+        public IActionResult Edit(int id)
+        {
+            //Collect
+            Employee empFRomDb= context.Employees.FirstOrDefault(e=>e.Id==id);
+            List<Department> DeptListLocal = context.Departments.ToList();
+            //Declare VM &mapping
+            EmpWithDeptListViewModel EmVM=  new EmpWithDeptListViewModel() { 
+                Id=empFRomDb.Id,
+                Name=empFRomDb.Name,
+                ImageURl=empFRomDb.ImageURl,
+                Salary=empFRomDb.Salary,
+                DepartmentId=empFRomDb.DepartmentId,
+                DeptList= DeptListLocal
+            };
+            //Send
+            return View("Edit", EmVM);
+        }
+        //automapper <Employee,EMVM>()
+        [HttpPost]
+        public IActionResult SaveEdit(EmpWithDeptListViewModel EmpFromREq)//Create obj
+        {
+            if (EmpFromREq.Name != null &&EmpFromREq.Salary>8000)
+            {
+                //old object frmo db
+                Employee empFromDB = context.Employees.FirstOrDefault(e => e.Id == EmpFromREq.Id);
+                //map
+                empFromDB.Name= EmpFromREq.Name;
+                empFromDB.Salary= EmpFromREq.Salary;
+                empFromDB.ImageURl= EmpFromREq.ImageURl;
+                empFromDB.DepartmentId= EmpFromREq.DepartmentId;
+                //save
+                context.SaveChanges();
+                //index
+                return RedirectToAction("All", "Employee");
+            }
+            //refull list
+            EmpFromREq.DeptList = context.Departments.ToList();
+            return View("Edit", EmpFromREq);
+
+        }
+        #endregion
+
+
         //Employee/Details/1
         //Employee/Details/2
         //Employee/Details/3

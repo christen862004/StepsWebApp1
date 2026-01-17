@@ -1,0 +1,39 @@
+﻿@model EmpWithDeptListViewModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+<form method="post" action="/Employee/SaveEdit/@Model.Id">
+    @* <input type="hidden" name="Id" value="@Model.Id" /> *@
+    <div>
+        <label>Name</label>
+        <input class="form form-control" type="text" name="Name" id="Name" value="@Model.Name" />
+    </div>
+    <div>
+        <label>Salary</label>
+        <input class="form form-control" type="number" name="Salary" id="Salary" value="@Model.Salary" />
+    </div>
+    <div>
+        <label>Image</label>
+        <input class="form form-control" type="text" name="ImageURl" id="ImageURl" value="@Model.ImageURl" />
+    </div>
+    <div>
+        <label>Department</label>
+        <select class="form form-control"  name="DepartmentId" id="DepartmentId">
+            @foreach (Department deptItem in Model.DeptList)
+            {
+                if (Model.DepartmentId == deptItem.Id){
+                    <option value="@deptItem.Id" selected>@deptItem.Name</option>
+                }
+                else
+                {
+                    <option value="@deptItem.Id">@deptItem.Name</option>
+                }
+            }
+        </select>
+    </div>
+    <input type="submit" value="Save" class="btn btn-dark" />
+</form>
+
+<a href="/Employee/All">Back To Lis</a>

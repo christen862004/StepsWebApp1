@@ -11,6 +11,38 @@ namespace WebApp1.Controllers
         {
             
         }
+
+        public IActionResult Index()
+        {
+            List<Department> departmentList = context.Departments.ToList();
+            return View("Index", departmentList);
+        }
+        #region New Department
+        public IActionResult New()
+        {
+            return View("New");//Model null
+        }
+        //Department/SaveNew?Name=fsdf&ManagerName=Ahemd
+        //Property with the same name of input name
+        //Action can handel Req :get | Post 
+        [HttpPost]
+        public IActionResult SaveNew(Department DeptFromReq)//Stawbery 
+        {
+            //if(Request.Method== "POST") { }
+            if (DeptFromReq.Name != null)
+            {
+                context.Departments.Add(DeptFromReq);
+                context.SaveChanges();
+                return RedirectToAction("Index", "Department");
+            }
+            return View("New", DeptFromReq);//Model DEpartmet
+        }
+
+
+
+
+        #endregion
+
         //Department/Details/1
         //Department/Details?id=1
         public IActionResult Details(int id)
