@@ -18,6 +18,33 @@ namespace WebApp1.Controllers
             //Model with Typle List<Employee>
         }
 
+
+        #region New
+        [HttpGet]
+        public IActionResult New()
+        {
+            
+            ViewData["DeptList"] = context.Departments.ToList();
+            return View("New");//end request send response View()
+        }
+        //attribute ???????????
+        [HttpPost]
+        [ValidateAntiForgeryToken]//reque.form["_re.."]
+        public IActionResult SaveNew(Employee EmpFromRequest)
+        {
+            if (EmpFromRequest.Name != null)
+            {
+                context.Employees.Add(EmpFromRequest);
+                context.SaveChanges();
+                return RedirectToAction("All", "Employee");//cant end but all action can do it
+            }
+            ViewData["DeptList"] = context.Departments.ToList();
+
+            return View("New",EmpFromRequest);//in case value wrong back to view
+        }
+
+        #endregion
+
         #region Edit
         public IActionResult Edit(int id)
         {
@@ -64,10 +91,10 @@ namespace WebApp1.Controllers
 
         //Employee/Details/1
         //Employee/Details/2
-        //Employee/Details/3
+        //Employee/Details/3?name=ahmed
         //Employee/Details?id=3
 
-        public IActionResult Details(int id)
+        public IActionResult Details(int id,string name)
         {
             Employee employee = context.Employees.FirstOrDefault(e=>e.Id==id);
             if(employee==null)

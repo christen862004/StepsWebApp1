@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApp1.Models
 {
@@ -10,6 +11,7 @@ namespace WebApp1.Models
         public string? ImageURl { get; set; }
 
         [ForeignKey("Department")]
+        [Display(Name="Department")]
         public int DepartmentId { get; set; }
 
         public Department Department { get; set; }
