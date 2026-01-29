@@ -5,7 +5,7 @@ namespace WebApp1.ViewModels
 {
     public class EmpWithDeptListViewModel
     {
-        public List<Department> DeptList { get; set; }
+        public List<Department>? DeptList { get; set; }
         //----------------------Employee 
         public int Id { get; set; }
 

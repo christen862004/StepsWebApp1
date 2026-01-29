@@ -17,7 +17,16 @@ namespace WebApp1.Controllers
             //Load View with name AllEmp  ==> Employee Folder
             //Model with Typle List<Employee>
         }
+        #region CheckSalary
 
+        //Get /Employee/CheckSalary?Salary=valu
+        public IActionResult CheckSalary(int Salary,string Name)
+        {
+            if (Salary > 1000)
+                return Json(true);
+            return Json(false);
+        }
+        #endregion
 
         #region New
         [HttpGet]
@@ -32,11 +41,20 @@ namespace WebApp1.Controllers
         [ValidateAntiForgeryToken]//reque.form["_re.."]
         public IActionResult SaveNew(Employee EmpFromRequest)
         {
-            if (EmpFromRequest.Name != null)
+//            if (EmpFromRequest.Name != null)
+            if(ModelState.IsValid)//Server Side Valiadtion
             {
-                context.Employees.Add(EmpFromRequest);
-                context.SaveChanges();
-                return RedirectToAction("All", "Employee");//cant end but all action can do it
+                try
+                {
+                    context.Employees.Add(EmpFromRequest);
+                    context.SaveChanges();
+                    return RedirectToAction("All", "Employee");//cant end but all action can do it
+                }catch (Exception ex)
+                {
+                    //select department
+                    //ModelState.AddModelError("DepartmentId", "Plesae Select DEpartment");
+                    ModelState.AddModelError("xyz", ex.InnerException.Message);//div only
+                }
             }
             ViewData["DeptList"] = context.Departments.ToList();
 
@@ -50,6 +68,10 @@ namespace WebApp1.Controllers
         {
             //Collect
             Employee empFRomDb= context.Employees.FirstOrDefault(e=>e.Id==id);
+            if(empFRomDb == null)
+            {
+                return NotFound();
+            }
             List<Department> DeptListLocal = context.Departments.ToList();
             //Declare VM &mapping
             EmpWithDeptListViewModel EmVM=  new EmpWithDeptListViewModel() { 
