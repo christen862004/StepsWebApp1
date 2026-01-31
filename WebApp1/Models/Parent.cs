@@ -1,5 +1,68 @@
 ﻿namespace WebApp1.Models
 {
+    interface ISort
+    {
+        void Sort(int[] arr);
+    }
+    class BubbleSort:ISort
+    {
+        public void Sort(int[] arr)
+        {
+            //sort using Buuble Sort alg
+        }
+    }
+    class SelectionSort:ISort
+    {
+        public void Sort(int[] arr) { }
+    }
+
+    class ChrisSort : ISort
+    {
+        public void Sort(int[] arr) { }
+
+    }
+    class MyList
+    {
+        int[] arr;
+        ISort SortAl;//lossly  couple
+        public MyList(ISort s)//DI ask consutor
+        {
+            arr = new int[10];
+            SortAl = s;// new BubbleSort();
+        }
+        public void SortList()// (ISort s)//method
+        {
+            SortAl.Sort(arr);
+        }
+    }
+    class test
+    {
+        public void xyz()
+        {
+
+
+
+
+            MyList l1 = new MyList( new BubbleSort());//Contoller Factory
+            MyList l2 = new MyList(new SelectionSort());
+            MyList l3 = new MyList(new ChrisSort());
+            l1.SortList();//sort using Bubblesort
+            l2.SortList();//sort using Bubblesort
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     class View1
     {

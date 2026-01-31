@@ -6,10 +6,14 @@ namespace WebApp1.Models
     {
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Department> Departments { get; set; }
+        //parameter less
+        //public StepsContext() : base()
+        //{ }//valiation atribute
 
-        public StepsContext() : base()
-        { }
+        public StepsContext(DbContextOptions<StepsContext> options) : base(options)
+        {
 
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=AppStep3;Integrated Security=True;Encrypt=False");

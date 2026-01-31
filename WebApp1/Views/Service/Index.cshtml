@@ -1,0 +1,12 @@
+﻿@using WebApp1.Repository
+@inject IService serivce
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+<h2>Service Id From View</h2>
+<h3>@serivce.Id</h3>
+<hr />
+<h2>Service Id From Contorller</h2>
+<h3>@ViewBag.Id</h3>

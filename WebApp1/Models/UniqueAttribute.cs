@@ -4,12 +4,13 @@ namespace WebApp1.Models
 {
     public class UniqueAttribute:ValidationAttribute //can't work in Client Side  (only Server Side)
     {
-        StepsContext context = new StepsContext();//????
+        StepsContext context;//= new StepsContext();//???? cant r
 
         public UniqueAttribute()
-        {        }
+        { }
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
+            context = validationContext.GetRequiredService<StepsContext>();
             Employee? empFRomREquest= validationContext.ObjectInstance as Employee;
 
             //ask 

@@ -1,20 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.CodeDom;
 using WebApp1.Models;
+using WebApp1.Repository;
 
 namespace WebApp1.Controllers
 {
     public class DepartmentController : Controller
     {
-        StepsContext context=new StepsContext();
-        public DepartmentController()
+        //  StepsContext context=new StepsContext();
+        IDepartmentRepository deptRepo;//low level class
+        public DepartmentController(IDepartmentRepository _deptRepo)//inject
         {
-            
+            deptRepo =  _deptRepo;//DI deont Create but ask
         }
 
         public IActionResult Index()
         {
-            List<Department> departmentList = context.Departments.ToList();
+            List<Department> departmentList = deptRepo.GetAll();
             return View("Index", departmentList);
         }
         #region New Department
@@ -31,8 +33,8 @@ namespace WebApp1.Controllers
             //if(Request.Method== "POST") { }
             if (DeptFromReq.Name != null)
             {
-                context.Departments.Add(DeptFromReq);
-                context.SaveChanges();
+                deptRepo.Add(DeptFromReq);
+                deptRepo.Save();
                 return RedirectToAction("Index", "Department");
             }
             return View("New", DeptFromReq);//Model DEpartmet
@@ -61,7 +63,7 @@ namespace WebApp1.Controllers
 
 
             //ask Model to detail sdb
-            Department deptModel = context.Departments.FirstOrDefault(d => d.Id == id);
+            Department deptModel = deptRepo.GetById(id) ;
             //send to view
             return View("Details",deptModel);
             //go to view with name DEtails ==> insidde DEpartment Folder
@@ -75,7 +77,7 @@ namespace WebApp1.Controllers
             int temp = 20;
             List<string> Branches = new List<string>() { "Assiut", "Alex", "Cairo", "Aswan" };
             //ask Model to detail sdb
-            Department deptModel = context.Departments.FirstOrDefault(d => d.Id == id);
+            Department deptModel = deptRepo.GetById(id);
 
             //Delare ViewModel
             DeptDetailsWithMsgTempBranchesandColorViewModel DeptVM = new();

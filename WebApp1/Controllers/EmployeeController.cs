@@ -1,17 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApp1.Models;
+using WebApp1.Repository;
 
 namespace WebApp1.Controllers
 {
+    //Solid Principle
     public class EmployeeController : Controller
     {
-        StepsContext context=new StepsContext();
+        //StepsContext context=new StepsContext();//deal db Bussiness Layer
+        IEmployeeRepository EmpRepo;//depend on abstraction
+        IDepartmentRepository deptRepo;
+        public EmployeeController(IEmployeeRepository empRepo,IDepartmentRepository deptRepo)
+        {
+            EmpRepo = empRepo;
+            this.deptRepo = deptRepo;
+        }
 
         //Employee/All
         public IActionResult All()
         {
             //Logic Ask Model From Data From DB
-            List<Employee> EmpList = context.Employees.ToList();
+            List<Employee> EmpList = EmpRepo.GetAll();
             //Send To View
             return View("AllEmp",EmpList);
             //Load View with name AllEmp  ==> Employee Folder
@@ -32,8 +41,8 @@ namespace WebApp1.Controllers
         [HttpGet]
         public IActionResult New()
         {
-            
-            ViewData["DeptList"] = context.Departments.ToList();
+
+            ViewData["DeptList"] = deptRepo.GetAll();
             return View("New");//end request send response View()
         }
         //attribute ???????????
@@ -46,8 +55,8 @@ namespace WebApp1.Controllers
             {
                 try
                 {
-                    context.Employees.Add(EmpFromRequest);
-                    context.SaveChanges();
+                    EmpRepo.Add(EmpFromRequest);
+                    EmpRepo.Save();
                     return RedirectToAction("All", "Employee");//cant end but all action can do it
                 }catch (Exception ex)
                 {
@@ -56,7 +65,7 @@ namespace WebApp1.Controllers
                     ModelState.AddModelError("xyz", ex.InnerException.Message);//div only
                 }
             }
-            ViewData["DeptList"] = context.Departments.ToList();
+            ViewData["DeptList"] = deptRepo.GetAll();
 
             return View("New",EmpFromRequest);//in case value wrong back to view
         }
@@ -67,12 +76,12 @@ namespace WebApp1.Controllers
         public IActionResult Edit(int id)
         {
             //Collect
-            Employee empFRomDb= context.Employees.FirstOrDefault(e=>e.Id==id);
+            Employee empFRomDb= EmpRepo.GetById(id);
             if(empFRomDb == null)
             {
                 return NotFound();
             }
-            List<Department> DeptListLocal = context.Departments.ToList();
+            List<Department> DeptListLocal = deptRepo.GetAll(); ;
             //Declare VM &mapping
             EmpWithDeptListViewModel EmVM=  new EmpWithDeptListViewModel() { 
                 Id=empFRomDb.Id,
@@ -91,25 +100,26 @@ namespace WebApp1.Controllers
         {
             if (EmpFromREq.Name != null &&EmpFromREq.Salary>8000)
             {
-                //old object frmo db
-                Employee empFromDB = context.Employees.FirstOrDefault(e => e.Id == EmpFromREq.Id);
+                
+                Employee empFromDB =new Employee();
+                empFromDB.Id = EmpFromREq.Id;
                 //map
                 empFromDB.Name= EmpFromREq.Name;
                 empFromDB.Salary= EmpFromREq.Salary;
                 empFromDB.ImageURl= EmpFromREq.ImageURl;
                 empFromDB.DepartmentId= EmpFromREq.DepartmentId;
+                EmpRepo.Update(empFromDB);
                 //save
-                context.SaveChanges();
+                EmpRepo.Save();
                 //index
                 return RedirectToAction("All", "Employee");
             }
             //refull list
-            EmpFromREq.DeptList = context.Departments.ToList();
+            EmpFromREq.DeptList = deptRepo.GetAll();
             return View("Edit", EmpFromREq);
 
         }
         #endregion
-
 
         //Employee/Details/1
         //Employee/Details/2
@@ -118,7 +128,7 @@ namespace WebApp1.Controllers
 
         public IActionResult Details(int id,string name)
         {
-            Employee employee = context.Employees.FirstOrDefault(e=>e.Id==id);
+            Employee employee = EmpRepo.GetById(id);
             if(employee==null)
             {
                 return NotFound();
