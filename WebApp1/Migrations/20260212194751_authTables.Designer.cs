@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApp1.Models;
 
@@ -11,9 +12,11 @@ using WebApp1.Models;
 namespace WebApp1.Migrations
 {
     [DbContext(typeof(StepsContext))]
-    partial class StepsContextModelSnapshot : ModelSnapshot
+    [Migration("20260212194751_authTables")]
+    partial class authTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

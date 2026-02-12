@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using WebApp1.Filtters;
 using WebApp1.Models;
 using WebApp1.Repository;
 
@@ -15,6 +16,7 @@ namespace WebApp1
             // Add services to the container.//Day8
             //Built in service and already register
             //Built in service need to register
+            //builder.Services.AddControllersWithViews(e=>e.Filters.Add(new HandelErrorAttribute()));
             builder.Services.AddControllersWithViews();
             //register options ,StepsContext
             builder.Services.AddDbContext<StepsContext>(dbContextOptionBuilder => {
@@ -55,20 +57,26 @@ namespace WebApp1
 
             // Configure the HTTP request pipeline. middleware Day2
             #region built in middlewares
-              if (!app.Environment.IsDevelopment())
-              {
-                  app.UseExceptionHandler("/Home/Error");
-              }
-              app.UseStaticFiles();//hanadel wwwroot
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+            app.UseStaticFiles();//hanadel wwwroot
+            //map (Secuirty)
+            app.UseRouting();
+            app.UseSession();
+            app.UseAuthorization();
 
-              app.UseRouting();
-                app.UseSession();
-                app.UseAuthorization();
+            //  app.MapControllerRoute("Route1", "R1/{id:int:range(20,60)}/{name:maxlength(5)}", new { controller = "Route", action = "Method1" });
+            //app.MapControllerRoute("Route1", "R1/{id:int:range(20,60)}/{name?}", new { controller = "Route", action = "Method1" });
+            //app.MapControllerRoute("Route2", "R2", new { controller = "Route", action = "MEthod2" });
+            //app.MapControllerRoute("Route2", "{controller}/{action}", new { controller = "Route", action = "MEthod1" });
 
-              app.MapControllerRoute(
-                  name: "default",
-                  pattern: "{controller=Home}/{action=Index}/{id?}");
-              
+            //DEclare route ,Execute (naming Convention Route)
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Department}/{action=Index}/{id?}");
+            //http:loaclhost:5656
             #endregion
             //run web app
             app.Run();

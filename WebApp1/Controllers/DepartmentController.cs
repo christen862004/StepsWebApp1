@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using System.CodeDom;
 using WebApp1.Models;
 using WebApp1.Repository;
@@ -22,6 +23,7 @@ namespace WebApp1.Controllers
         #region New Department
         public IActionResult New()
         {
+            
             return View("New");//Model null
         }
         //Department/SaveNew?Name=fsdf&ManagerName=Ahemd
