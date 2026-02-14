@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebApp1.Filtters;
 using WebApp1.Models;
@@ -25,7 +26,19 @@ namespace WebApp1
             builder.Services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(45);
+
             });
+
+
+            //register idenitty managers ,stores, name cookie
+            builder.Services.AddIdentity<AppliactionUser, IdentityRole>(options => {
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 4;
+                options.Password.RequireDigit = false;
+                options.Password.RequireUppercase = false;
+                
+            }).AddEntityFrameworkStores<StepsContext>();
+
             //Cusotm Service and Need To Register
             builder.Services.AddScoped<IEmployeeRepository,EmployeeRepository>();
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
@@ -75,7 +88,7 @@ namespace WebApp1
             //DEclare route ,Execute (naming Convention Route)
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Department}/{action=Index}/{id?}");
+                pattern: "{controller=Home}/{action=Index}/{id?}");
             //http:loaclhost:5656
             #endregion
             //run web app

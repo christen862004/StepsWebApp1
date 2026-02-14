@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebApp1.Models;
 using WebApp1.Repository;
 
@@ -17,6 +18,7 @@ namespace WebApp1.Controllers
         }
 
         //Employee/All
+        [Authorize]
         public IActionResult All()
         {
             //Logic Ask Model From Data From DB

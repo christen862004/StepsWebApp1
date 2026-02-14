@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.CodeDom;
 using WebApp1.Models;
@@ -14,7 +15,7 @@ namespace WebApp1.Controllers
         {
             deptRepo =  _deptRepo;//DI deont Create but ask
         }
-
+        [Authorize(Roles ="Admin")]
         public IActionResult Index()
         {
             List<Department> departmentList = deptRepo.GetAll();
